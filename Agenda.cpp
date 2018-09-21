@@ -23,17 +23,16 @@ struct Agenda {
 int MenuPrimario();
 int MenuSecundario();
 void Insertar(struct Agenda Contactos[]);
-void Buscar();
+void Buscar(struct Agenda Contactos[]);
 void Listar(struct Agenda Contactos[]);
-void Actualizar();
-void Eliminar();
+void Actualizar(struct Agenda Contactos[]);
+void Eliminar(struct Agenda Contactos[]);
 
 int HayContactos(struct Agenda Contactos[], int);
 
 void Detenerse();
 void LimpiarPantalla();
 void Dormir(int);
-
 int Salir();
 
 // Definición del constructor, fuera de la estructura
@@ -54,21 +53,18 @@ int main(int argc, char *argv[]) {
 			/*No hay contactos*/
 			do {
 				x = MenuPrimario();
-			} while(x < 1 || x > 3);
+			} while(x < 1 || x > 2);
 			
 			switch (x){
 				case 1: 
 					Insertar(Contactos);
 					break;
 				case 2:
-					Buscar();
-					break;
-				case 3: 
 					if (Salir() == 1)
 						goto Finish;
 					break;
 				default:
-					printf("Up's, ha ocurrido algo inesperado, presione una tecla para continuar!.");
+					cout << "Up's, ha ocurrido algo inesperado, presione una tecla para continuar!." << endl;
 					system("PAUSE>NUL");
 					break;
 			}
@@ -84,7 +80,7 @@ int main(int argc, char *argv[]) {
 					Insertar(Contactos);
 					break;
 				case 2:
-					Buscar();
+					Buscar(Contactos);
 					break;
 				case 3: 
 					Listar(Contactos);
@@ -94,7 +90,7 @@ int main(int argc, char *argv[]) {
 						goto Finish;
 					break;
 				default:
-					printf("Up's, ha ocurrido algo inesperado, presione una tecla para continuar!.");
+					cout << "Up's, ha ocurrido algo inesperado, presione una tecla para continuar!." << endl;
 					system("PAUSE>NUL");
 					break;
 			}
@@ -122,7 +118,7 @@ int MenuPrimario(){
 	//Dormir(1);
 	
 	cout << Regla << endl;
-	cout << "| (1) Nuevo contacto  |  (2) Buscar contacto  | (3) Salir   |" << endl;
+	cout << "| (1) Nuevo contacto           |        (2) Salir           |" << endl;
 	cout << Regla << endl;
 	
 	cout << "Esperando respuesta: ";
@@ -159,20 +155,23 @@ int MenuSecundario(){
 void Insertar(struct Agenda Contactos[]){
 	
 	if (ContactosRegistrados < CANTIDAD){
-		cout << "\tNúmero de contacto: " << (ContactosRegistrados + 1) << endl;
-		cout << "\tNombre: ";
+		cout << "\n\tNúmero de contacto: " << (ContactosRegistrados + 1) << endl;
+		cout << "\tNombre:   ";
 		getline(cin, Contactos[ContactosRegistrados].Nombre);
 		
 		cout << "\tTeléfono: ";
 		getline(cin, Contactos[ContactosRegistrados].Telefono);
 		
-		cout << "\tCelular: ";
+		cout << "\tCelular:  ";
 		getline(cin, Contactos[ContactosRegistrados].Celular);
 		
-		cout << "\tEmail: ";
+		cout << "\tEmail:    ";
 		getline(cin, Contactos[ContactosRegistrados].Email);
 		
 		ContactosRegistrados++;
+		
+		cout << "\n\t¡Agregado con éxito!" << endl << endl;
+		
 	} else {
 		cout << "Llegó al límite de contactos permitidos en la agenda." << endl << endl;
 	}
@@ -181,23 +180,47 @@ void Insertar(struct Agenda Contactos[]){
 	return;
 }
 
-void Buscar(){
+void Buscar(struct Agenda Contactos[]){
 	cout << "Buscar" << endl;
 	Detenerse();
 }
 
 void Listar(struct Agenda Contactos[]){
+	int i = 0, contactos_restantes = 0;
 	
+	for (; i < ContactosRegistrados; i++){
+		if (i > 1){
+			contactos_restantes = ContactosRegistrados - i;
+			
+			if (contactos_restantes > 1)
+				cout << "\t-- Aún quedan " << (ContactosRegistrados - i) << " por visualizar --" << endl;
+			else if (contactos_restantes == 1)
+				cout << "\t-- Aún queda " << (ContactosRegistrados - i) << " por visualizar --" << endl;
+				
+			Detenerse();
+			cout << endl;
+		}
+		
+		cout << "\n\tNúmero de contacto: " << (i + 1) << endl;
+		cout << "\t\tNombre:   " << Contactos[i].Nombre << endl;
+		cout << "\t\tTeléfono: " << Contactos[i].Telefono << endl;
+		cout << "\t\tCelular:  " << Contactos[i].Celular << endl;
+		cout << "\t\tEmail:    " << Contactos[i].Email << endl << endl;
+	}
 	
+	Detenerse();
+	return;
+}
+void Actualizar(struct Agenda Contactos[]){
+	Detenerse();
 	
 	return;
 }
-void Actualizar(){
-	Detenerse();
-}
 
-void Eliminar(){
+void Eliminar(struct Agenda Contactos[]){
 	Detenerse();
+	
+	return;
 }
 
 int HayContactos(struct Agenda Contactos[], int Inicial){
@@ -215,7 +238,7 @@ int HayContactos(struct Agenda Contactos[], int Inicial){
 }
 
 void Detenerse(){
-	cout << "¡Presione una tecla para continuar!";
+	cout << "\t¡Presione una tecla para continuar!";
 	system("PAUSE>NUL");
 }
 void LimpiarPantalla(){
